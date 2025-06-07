@@ -3,12 +3,20 @@ import { AppModule } from './app.module';
 import { setupSwagger } from '@app/common/functions/setupSwagger';
 import { enableCors } from '@app/common/functions/enableCors';
 import { HttpStatus, Logger, ValidationPipe } from '@nestjs/common';
+import { Environment } from '@app/common/config/environment';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log', 'debug'],
+  });
+  console.log('DB Config:', {
+    host: Environment.DB_HOST,
+    port: Environment.DB_PORT,
+    username: Environment.DB_USER,
+    password: Environment.DB_PASSWORD ? '***' : 'undefined',
+    database: Environment.DB_NAME,
   });
 
   enableCors(app);
