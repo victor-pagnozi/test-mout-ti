@@ -8,6 +8,9 @@ export const DatabaseConfig: TypeOrmModuleOptions = {
   username: Environment.DB_USER,
   password: Environment.DB_PASSWORD,
   database: Environment.DB_NAME,
-  entities: [__dirname + '../models/**/*.model{.ts}'],
   synchronize: true,
+  autoLoadEntities: true,
+  logging: Environment.NODE_ENV === 'development',
+  retryAttempts: 3,
+  retryDelay: 3000,
 };

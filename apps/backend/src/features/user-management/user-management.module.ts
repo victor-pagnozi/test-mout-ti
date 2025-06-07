@@ -8,9 +8,10 @@ import {
   UserFinderService,
   UserUpdaterService,
 } from './services';
+import { HasherModule } from '@app/common/services/hasher/hasher.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), HasherModule],
   controllers: [UserManagementController],
   providers: [
     UserCreatorService,

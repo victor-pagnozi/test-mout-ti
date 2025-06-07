@@ -4,11 +4,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
   HttpStatus,
+  Put,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -25,6 +26,9 @@ import {
 } from './services';
 import { CreateUserRequest } from './requests/create-user.request';
 import { FindUserResponse } from './responses/find-user.response';
+import { sendResponse } from '@app/common/functions/sendResponse';
+import { ResponseBody } from '@app/common/interfaces/ResponseService';
+import { ReadUserResponse } from './responses/read-user.response';
 
 @Controller(RouteTags.USER)
 @ApiTags(RouteTags.USER)
@@ -60,8 +64,12 @@ export class UserManagementController {
   })
   async create(
     @Body() createUserRequest: CreateUserRequest,
-  ): Promise<FindUserResponse> {
-    return await this.userCreatorService.execute(createUserRequest);
+  ): Promise<ResponseBody<FindUserResponse>> {
+    const result = await this.userCreatorService.execute(createUserRequest);
+
+    return sendResponse({
+      data: result,
+    });
   }
 
   @Get()
@@ -74,8 +82,12 @@ export class UserManagementController {
     description: 'Users retrieved successfully',
     type: [FindUserResponse],
   })
-  async findAll(): Promise<FindUserResponse[]> {
-    return await this.userFinderService.findAll();
+  async findAll(): Promise<ResponseBody<ReadUserResponse>> {
+    const result = await this.userFinderService.findAll();
+
+    return sendResponse({
+      data: result,
+    });
   }
 
   @Get(':id')
@@ -86,7 +98,6 @@ export class UserManagementController {
   @ApiParam({
     name: 'id',
     description: 'User unique identifier (UUID)',
-    example: '550e8400-e29b-41d4-a716-446655440000',
     type: 'string',
   })
   @ApiResponse({
@@ -98,12 +109,14 @@ export class UserManagementController {
     status: 404,
     description: 'User not found',
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid UUID format',
-  })
-  async findOne(@Param('id') id: string): Promise<FindUserResponse> {
-    return await this.userFinderService.findById(id);
+  async findOne(
+    @Param('id') id: string,
+  ): Promise<ResponseBody<FindUserResponse>> {
+    const result = await this.userFinderService.findById(id);
+
+    return sendResponse({
+      data: result,
+    });
   }
 
   @Get('email/:email')
@@ -130,11 +143,17 @@ export class UserManagementController {
     status: 400,
     description: 'Invalid email format',
   })
-  async findByEmail(@Param('email') email: string): Promise<FindUserResponse> {
-    return await this.userFinderService.findByEmail(email);
+  async findByEmail(
+    @Param('email') email: string,
+  ): Promise<ResponseBody<FindUserResponse>> {
+    const result = await this.userFinderService.findByEmail(email);
+
+    return sendResponse({
+      data: result,
+    });
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({
     summary: 'Update user by ID',
     description: 'Updates user information with the provided data',
@@ -163,8 +182,12 @@ export class UserManagementController {
   async update(
     @Param('id') id: string,
     @Body() updateUserRequest: CreateUserRequest,
-  ): Promise<FindUserResponse> {
-    return await this.userUpdaterService.execute(id, updateUserRequest);
+  ): Promise<ResponseBody<FindUserResponse>> {
+    const result = await this.userUpdaterService.execute(id, updateUserRequest);
+
+    return sendResponse({
+      data: result,
+    });
   }
 
   @Delete(':id')
@@ -188,11 +211,15 @@ export class UserManagementController {
     status: 404,
     description: 'User not found',
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid UUID format',
-  })
-  async remove(@Param('id') id: string): Promise<void> {
-    return await this.userEraserService.execute(id);
+  async remove(@Param('id') id: string): Promise<ResponseBody<void>> {
+    const result = await this.userEraserService.execute(id);
+
+    if (!result) {
+      throw new NotFoundException(id);
+    }
+
+    return sendResponse({
+      status: result,
+    });
   }
 }

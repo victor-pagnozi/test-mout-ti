@@ -6,6 +6,7 @@ import {
   IsDateString,
   IsBoolean,
   Length,
+  MinLength,
 } from 'class-validator';
 
 export class CreateUserRequest {
@@ -26,12 +27,14 @@ export class CreateUserRequest {
 
   @ApiProperty({ description: 'User password', example: 'password123' })
   @IsString()
+  @MinLength(6)
   password: string;
 
   @ApiProperty({ description: 'Country code (4 characters)', example: '+55' })
   @IsString()
+  @IsOptional()
   @Length(4, 4)
-  country_code: string;
+  country_code?: string;
 
   @ApiProperty({
     description: 'Phone number (up to 12 characters)',
