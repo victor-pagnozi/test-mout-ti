@@ -10,7 +10,7 @@ export const useListUsers = () => {
   return useQuery<ListUsersApiResponse, Error>({
     queryKey: [QueryKeys.LIST_USERS],
     queryFn: async () => {
-      const response = await apiInstance.get<ListUsersResponseData>("/user");
+      const response = await apiInstance.get<ListUsersResponseData>("/users");
       return response.data.data;
     },
   });

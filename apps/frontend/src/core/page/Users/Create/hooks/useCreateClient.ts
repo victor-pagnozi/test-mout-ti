@@ -11,7 +11,7 @@ export const useCreateClient = () => {
   const { data, isPending, mutate } = useMutation({
     mutationKey: [QueryKeys.CREATE_USER],
     mutationFn: async (data: FormUserData) => {
-      const { data: response } = await apiInstance.post("/user", data);
+      const { data: response } = await apiInstance.post("/users", data);
 
       return response;
     },

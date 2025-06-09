@@ -1,3 +1,3 @@
 export enum RouteTags {
-  USER = 'user',
+  USERS = 'users',
 }

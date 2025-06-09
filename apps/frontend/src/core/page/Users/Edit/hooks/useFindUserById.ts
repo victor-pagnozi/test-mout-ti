@@ -10,7 +10,7 @@ export const useFindUserById = () => {
   return useQuery<UserData, Error>({
     queryKey: [QueryKeys.FIND_USER],
     queryFn: async () => {
-      const response = await apiInstance.get<FindUserResponse>(`/user/${id}`);
+      const response = await apiInstance.get<FindUserResponse>(`/users/${id}`);
 
       return response.data.data;
     },

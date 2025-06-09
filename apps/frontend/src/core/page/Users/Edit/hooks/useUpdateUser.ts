@@ -11,7 +11,7 @@ export const useUpdateUser = () => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateUser"],
     mutationFn: async (data: FormUserData) => {
-      const { data: response } = await apiInstance.put(`/user/${id}`, data);
+      const { data: response } = await apiInstance.put(`/users/${id}`, data);
 
       return response;
     },

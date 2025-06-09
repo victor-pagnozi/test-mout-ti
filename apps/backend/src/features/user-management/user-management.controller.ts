@@ -30,8 +30,8 @@ import { sendResponse } from '@app/common/functions/sendResponse';
 import { ResponseBody } from '@app/common/interfaces/ResponseService';
 import { ReadUserResponse } from './responses/read-user.response';
 
-@Controller(RouteTags.USER)
-@ApiTags(RouteTags.USER)
+@Controller(RouteTags.USERS)
+@ApiTags(RouteTags.USERS)
 export class UserManagementController {
   constructor(
     private readonly userCreatorService: UserCreatorService,
