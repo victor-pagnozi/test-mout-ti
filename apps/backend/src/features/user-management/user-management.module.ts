@@ -9,9 +9,10 @@ import {
   UserUpdaterService,
 } from './services';
 import { HasherModule } from '@app/common/services/hasher/hasher.module';
+import { CacheModule } from '@app/common/services/cache/cache.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), HasherModule],
+  imports: [TypeOrmModule.forFeature([User]), HasherModule, CacheModule],
   controllers: [UserManagementController],
   providers: [
     UserCreatorService,

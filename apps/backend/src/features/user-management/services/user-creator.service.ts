@@ -6,12 +6,15 @@ import { CreateUserRequest } from '../requests/create-user.request';
 import { User } from '@app/common/models/user/user.model';
 import { HasherService } from '@app/common/services/hasher/hasher.service';
 import { FindUserResponse } from '../responses/find-user.response';
+import { CacheService } from '@app/common/services/cache/cache.service';
+
 @Injectable()
 export class UserCreatorService extends BaseUserService {
   constructor(
     @InjectRepository(User)
     protected readonly userRepository: Repository<User>,
     private readonly hasherService: HasherService,
+    private readonly cacheService: CacheService,
   ) {
     super(userRepository);
   }
@@ -28,6 +31,8 @@ export class UserCreatorService extends BaseUserService {
     const user = this.userRepository.create(createUserRequest);
 
     const response = await this.saveUser(user);
+
+    await this.cacheService.delete('users:all');
 
     return new FindUserResponse(response);
   }

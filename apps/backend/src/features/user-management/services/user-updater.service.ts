@@ -4,10 +4,14 @@ import { User } from '@app/common/models/user/user.model';
 import { Repository } from 'typeorm';
 import { CreateUserRequest } from '../requests/create-user.request';
 import { FindUserResponse } from '../responses/find-user.response';
+import { CacheService } from '@app/common/services/cache/cache.service';
 
 @Injectable()
 export class UserUpdaterService extends BaseUserService {
-  constructor(userRepository: Repository<User>) {
+  constructor(
+    userRepository: Repository<User>,
+    private readonly cacheService: CacheService,
+  ) {
     super(userRepository);
   }
 
@@ -28,6 +32,11 @@ export class UserUpdaterService extends BaseUserService {
     this.updateUserProperties(user, updateUserRequest);
 
     const result = await this.saveUser(user);
+
+    await Promise.all([
+      this.cacheService.delete('users:all'),
+      this.cacheService.delete(`user:${id}`),
+    ]);
 
     return new FindUserResponse(result);
   }
