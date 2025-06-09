@@ -4,11 +4,12 @@ import { BaseUserService } from './base-user.service';
 import { FindUserResponse } from '../responses/find-user.response';
 import { ReadUserResponse } from '../responses/read-user.response';
 import { CacheService } from '@app/common/services/cache/cache.service';
+import { User } from '@app/common/models/user';
+import { CacheKey } from '@app/common/common/enums/cache';
 
 @Injectable()
 export class UserFinderService extends BaseUserService {
-  private readonly CACHE_TTL = 300; // 5 minutes
-  private readonly USERS_CACHE_KEY = 'users:all';
+  private readonly CACHE_TTL = 50000;
 
   constructor(
     userRepository: Repository<User>,
@@ -18,7 +19,7 @@ export class UserFinderService extends BaseUserService {
   }
 
   async findById(id: string): Promise<FindUserResponse> {
-    const cacheKey = `${this.USER_CACHE_PREFIX}${id}`;
+    const cacheKey = `${CacheKey.USER}${id}`;
 
     const cachedUser = await this.cacheService.get<FindUserResponse>(cacheKey);
 
@@ -41,16 +42,18 @@ export class UserFinderService extends BaseUserService {
 
   async findAll(): Promise<ReadUserResponse> {
     const cachedUsers = await this.cacheService.get<ReadUserResponse>(
-      this.USERS_CACHE_KEY,
+      CacheKey.USERS_ALL,
     );
 
     if (cachedUsers) {
       return cachedUsers;
     }
 
+    const [results, totalResults] = await this.userRepository.findAndCount();
+
     const response = new ReadUserResponse(results, totalResults);
 
-    await this.cacheService.set(this.USERS_CACHE_KEY, response, this.CACHE_TTL);
+    await this.cacheService.set(CacheKey.USERS_ALL, response, this.CACHE_TTL);
 
     return response;
   }

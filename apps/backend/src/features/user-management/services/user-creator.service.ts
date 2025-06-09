@@ -7,6 +7,7 @@ import { User } from '@app/common/models/user/user.model';
 import { HasherService } from '@app/common/services/hasher/hasher.service';
 import { FindUserResponse } from '../responses/find-user.response';
 import { CacheService } from '@app/common/services/cache/cache.service';
+import { CacheKey } from '@app/common/common/enums/cache';
 
 @Injectable()
 export class UserCreatorService extends BaseUserService {
@@ -32,7 +33,7 @@ export class UserCreatorService extends BaseUserService {
 
     const response = await this.saveUser(user);
 
-    await this.cacheService.delete('users:all');
+    await this.cacheService.delete(CacheKey.USERS_ALL);
 
     return new FindUserResponse(response);
   }

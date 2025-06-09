@@ -23,7 +23,9 @@ export class CacheService {
 
   async set<T>(key: string, value: T, ttl?: number): Promise<void> {
     try {
-      await this.cacheManager.set(key, value, ttl);
+      const response = await this.cacheManager.set(key, value, ttl);
+
+      console.log(response);
 
       this.logger.debug(`Cache SET: ${key} - TTL: ${ttl ?? 'default'}`);
     } catch (error) {

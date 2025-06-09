@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserRequest } from '../requests/create-user.request';
 import { FindUserResponse } from '../responses/find-user.response';
 import { CacheService } from '@app/common/services/cache/cache.service';
+import { CacheKey } from '@app/common/common/enums/cache';
 
 @Injectable()
 export class UserUpdaterService extends BaseUserService {
@@ -23,8 +24,6 @@ export class UserUpdaterService extends BaseUserService {
       id,
     });
 
-    console.log(user);
-
     if (updateUserRequest.email && updateUserRequest.email !== user.email) {
       await this.validateEmailUniqueness(updateUserRequest.email, id);
     }
@@ -34,8 +33,8 @@ export class UserUpdaterService extends BaseUserService {
     const result = await this.saveUser(user);
 
     await Promise.all([
-      this.cacheService.delete('users:all'),
-      this.cacheService.delete(`user:${id}`),
+      this.cacheService.delete(CacheKey.USER + id),
+      this.cacheService.delete(CacheKey.USERS_ALL),
     ]);
 
     return new FindUserResponse(result);
