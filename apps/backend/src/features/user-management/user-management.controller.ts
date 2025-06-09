@@ -119,40 +119,6 @@ export class UserManagementController {
     });
   }
 
-  @Get('email/:email')
-  @ApiOperation({
-    summary: 'Get user by email',
-    description: 'Retrieves a specific user by their email address',
-  })
-  @ApiParam({
-    name: 'email',
-    description: 'User email address',
-    example: 'john.doe@example.com',
-    type: 'string',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'User retrieved successfully',
-    type: FindUserResponse,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'User not found',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid email format',
-  })
-  async findByEmail(
-    @Param('email') email: string,
-  ): Promise<ResponseBody<FindUserResponse>> {
-    const result = await this.userFinderService.findByEmail(email);
-
-    return sendResponse({
-      data: result,
-    });
-  }
-
   @Put(':id')
   @ApiOperation({
     summary: 'Update user by ID',
