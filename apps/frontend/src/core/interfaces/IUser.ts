@@ -20,3 +20,9 @@ export interface ListUsersResponseData {
   message?: string;
   status?: boolean;
 }
+
+export interface FindUserResponse {
+  data: UserData;
+  message?: string;
+  status?: boolean;
+}

@@ -1,4 +1,5 @@
 export enum QueryKeys {
-  CREATE_CLIENT = "create_client",
-  LIST_USERS = "listUsers",
+  CREATE_USER = "create_user",
+  LIST_USERS = "list_users",
+  FIND_USER = "find_user",
 }

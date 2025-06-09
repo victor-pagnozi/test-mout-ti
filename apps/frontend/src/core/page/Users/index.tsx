@@ -24,6 +24,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useListUsers } from "./hooks/useListUsers";
 import { useDeleteUser } from "./hooks/useDeleteUser";
 import Link from "next/link";
+import { maskPhoneNumber } from "@/core/common/functions/masks/phoneNumber";
 
 export const UsersPage = () => {
   const router = useRouter();
@@ -142,7 +143,7 @@ export const UsersPage = () => {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     {`${user.country_code ?? ""} ${
-                      user.phone_number ?? ""
+                      maskPhoneNumber(user.phone_number ?? "") ?? ""
                     }`.trim() ?? "-"}
                   </TableCell>
                   <TableCell>{formatDate(user.date_of_birth)}</TableCell>
