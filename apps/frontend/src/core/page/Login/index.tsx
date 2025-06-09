@@ -1,7 +1,22 @@
 import { Box, Button, TextField } from "@mui/material";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { loginSchema, LoginSchemaType } from "./login.schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const LoginPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const submit = (data: LoginSchemaType) => {
+    console.log(data);
+  };
+
   return (
     <Box
       sx={{
@@ -11,11 +26,19 @@ export const LoginPage = () => {
         alignItems: "center",
         border: "1px solid #ccc",
         borderRadius: 2,
-        width: 600,
+        width: {
+          xs: "100%",
+          sm: 400,
+          md: 500,
+          lg: 600,
+          xl: 700,
+        },
         height: 400,
-        gap: 2,
+        gap: 3,
         padding: 4,
       }}
+      component="form"
+      onSubmit={handleSubmit(submit)}
     >
       {/* #5BA584 */}
       <Image
@@ -29,10 +52,41 @@ export const LoginPage = () => {
         }}
       />
 
-      <TextField label="E-mail" sx={{ width: "100%" }} />
-      <TextField type="password" label="Senha" sx={{ width: "100%" }} />
+      <TextField
+        label="E-mail"
+        sx={{ width: "100%" }}
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
+      <TextField
+        type="password"
+        label="Senha"
+        sx={{ width: "100%" }}
+        {...register("password")}
+        error={!!errors.password}
+        helperText={errors.password?.message}
+      />
 
-      <Button variant="contained">ENTRAR</Button>
+      <Box sx={{ display: "flex", gap: 4 }}>
+        <Button
+          variant="outlined"
+          sx={{
+            width: 140,
+          }}
+        >
+          CRIAR CONTA
+        </Button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            width: 140,
+          }}
+        >
+          ENTRAR
+        </Button>
+      </Box>
     </Box>
   );
 };

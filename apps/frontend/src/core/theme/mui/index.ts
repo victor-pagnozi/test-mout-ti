@@ -13,6 +13,8 @@ const lightTheme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 600,
+        },
+        contained: {
           color: "#fff",
         },
       },
