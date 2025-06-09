@@ -42,25 +42,25 @@ export class UserManagementController {
 
   @Post()
   @ApiOperation({
-    summary: 'Create a new user',
-    description: 'Creates a new user with the provided information',
+    summary: 'Criar um novo usuário',
+    description: 'Cria um novo usuário com as informações fornecidas',
   })
   @ApiBody({
     type: CreateUserRequest,
-    description: 'User creation data',
+    description: 'Dados para criação do usuário',
   })
   @ApiResponse({
     status: 201,
-    description: 'User created successfully',
+    description: 'Usuário criado com sucesso',
     type: FindUserResponse,
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid input data or validation errors',
+    description: 'Dados de entrada inválidos ou erros de validação',
   })
   @ApiResponse({
     status: 409,
-    description: 'Email already exists',
+    description: 'Email já existe',
   })
   async create(
     @Body() createUserRequest: CreateUserRequest,
@@ -74,12 +74,12 @@ export class UserManagementController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get all users',
-    description: 'Retrieves a list of all active users',
+    summary: 'Obter todos os usuários',
+    description: 'Recupera uma lista de todos os usuários ativos',
   })
   @ApiResponse({
     status: 200,
-    description: 'Users retrieved successfully',
+    description: 'Usuários recuperados com sucesso',
     type: [FindUserResponse],
   })
   async findAll(): Promise<ResponseBody<ReadUserResponse>> {
@@ -92,22 +92,22 @@ export class UserManagementController {
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Get user by ID',
-    description: 'Retrieves a specific user by their unique identifier',
+    summary: 'Obter usuário por ID',
+    description: 'Recupera um usuário específico pelo seu identificador único',
   })
   @ApiParam({
     name: 'id',
-    description: 'User unique identifier (UUID)',
+    description: 'Identificador único do usuário (UUID)',
     type: 'string',
   })
   @ApiResponse({
     status: 200,
-    description: 'User retrieved successfully',
+    description: 'Usuário recuperado com sucesso',
     type: FindUserResponse,
   })
   @ApiResponse({
     status: 404,
-    description: 'User not found',
+    description: 'Usuário não encontrado',
   })
   async findOne(
     @Param('id') id: string,
@@ -121,29 +121,30 @@ export class UserManagementController {
 
   @Put(':id')
   @ApiOperation({
-    summary: 'Update user by ID',
-    description: 'Updates user information with the provided data',
+    summary: 'Atualizar usuário por ID',
+    description: 'Atualiza as informações do usuário com os dados fornecidos',
   })
   @ApiParam({
     name: 'id',
-    description: 'User unique identifier (UUID)',
+    description: 'Identificador único do usuário (UUID)',
   })
   @ApiBody({
     type: CreateUserRequest,
-    description: 'User update data (all fields are optional)',
+    description:
+      'Dados de atualização do usuário (todos os campos são opcionais)',
   })
   @ApiResponse({
     status: 200,
-    description: 'User updated successfully',
+    description: 'Usuário atualizado com sucesso',
     type: FindUserResponse,
   })
   @ApiResponse({
     status: 404,
-    description: 'User not found',
+    description: 'Usuário não encontrado',
   })
   @ApiResponse({
     status: 409,
-    description: 'Email already exists (when updating email)',
+    description: 'Email já existe (ao atualizar email)',
   })
   async update(
     @Param('id') id: string,
@@ -159,23 +160,23 @@ export class UserManagementController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
-    summary: 'Soft delete user by ID',
+    summary: 'Excluir usuário por ID (exclusão lógica)',
     description:
-      'Performs a soft delete on the user (sets deleted_at timestamp)',
+      'Realiza uma exclusão lógica no usuário (define o timestamp deleted_at)',
   })
   @ApiParam({
     name: 'id',
-    description: 'User unique identifier (UUID)',
+    description: 'Identificador único do usuário (UUID)',
     example: '550e8400-e29b-41d4-a716-446655440000',
     type: 'string',
   })
   @ApiResponse({
     status: 204,
-    description: 'User deleted successfully (soft delete)',
+    description: 'Usuário excluído com sucesso (exclusão lógica)',
   })
   @ApiResponse({
     status: 404,
-    description: 'User not found',
+    description: 'Usuário não encontrado',
   })
   async remove(@Param('id') id: string): Promise<ResponseBody<void>> {
     const result = await this.userEraserService.execute(id);
