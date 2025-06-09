@@ -15,11 +15,12 @@ export default function AuthLayout({
         sx={{
           minHeight: "100vh",
           maxWidth: "100vw",
+          width: "100vw",
           display: "flex",
-          alignItems: "center",
           justifyContent: "center",
           backgroundImage: "url(/images/auth/background.jpg)",
           backgroundSize: "cover",
+          mt: 12,
         }}
       >
         {children}
