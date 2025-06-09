@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { setupSwagger } from '@app/common/functions/setupSwagger';
 import { enableCors } from '@app/common/functions/enableCors';
 import { HttpStatus, Logger, ValidationPipe } from '@nestjs/common';
+import { Environment } from '@app/common/config/environment';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -21,7 +22,7 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.PORT ?? 3000;
+  const port = Environment.PORT ?? 3001;
 
   logger.log(`Starting server on port ${port}`);
 

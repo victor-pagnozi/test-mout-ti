@@ -33,7 +33,7 @@ export class CreateUserRequest {
   @ApiProperty({ description: 'Country code (4 characters)', example: '+55' })
   @IsString()
   @IsOptional()
-  @Length(4, 4)
+  @Length(2, 4)
   country_code?: string;
 
   @ApiProperty({

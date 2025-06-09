@@ -7,4 +7,5 @@ export const Environment = {
   NODE_ENV: process.env.NODE_ENV,
   CORS_URL: process.env.CORS_URL,
   JWT_SECRET: process.env.JWT_SECRET_KEY,
+  PORT: process.env.PORT,
 };

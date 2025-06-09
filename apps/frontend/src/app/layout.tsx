@@ -6,6 +6,8 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@/core/hooks/contexts/ThemeContext";
 import { cookies } from "next/headers";
 import { ThemeCookiesEnum, ThemeModeEnum } from "@/core/common/enums/theme";
+import { Box } from "@mui/material";
+import { ThemeMode } from "@/core/components/ThemeMode";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Mouts TI",
-  description: "Teste de ",
+  description: "Teste para TechLead Fullstack",
 };
 
 export default async function RootLayout({
@@ -39,7 +41,19 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppRouterCacheProvider>
           <ReactQueryContext>
-            <ThemeProvider {...{ themeMode }}>{children}</ThemeProvider>
+            <ThemeProvider {...{ themeMode }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100vw",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <ThemeMode />
+              </Box>
+
+              <Box>{children}</Box>
+            </ThemeProvider>
           </ReactQueryContext>
         </AppRouterCacheProvider>
       </body>
