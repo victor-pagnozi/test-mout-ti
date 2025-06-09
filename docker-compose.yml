@@ -1,4 +1,46 @@
 services:
+  backend:
+    container_name: mouts-backend
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    environment:
+      - DB_HOST=backend-database
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+      - DB_NAME=mouts
+      - NODE_ENV=development
+      - CORS_URL=http://localhost:3000
+      - PORT=3001
+      - JWT_SECRET_KEY=your_jwt_secret_key_here
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=dY5MRW2^!jxHX
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend-database
+      - redis
+    networks:
+      - application
+    restart: always
+
+  frontend:
+    container_name: mouts-frontend
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    environment:
+      - NEXT_PUBLIC_SERVER_URL=http://backend:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - application
+    restart: always
+
   backend-database:
     container_name: backend-database
     image: postgres:latest
