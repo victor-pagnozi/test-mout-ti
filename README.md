@@ -68,3 +68,12 @@ pnpm dev
 ```
 
 Your application should now be running!
+
+## API Documentation
+
+The API documentation is available via Swagger UI at:
+```
+http://localhost:3001/docs
+```
+
+Replace `localhost:3000` with your backend URL if running on a different host or port.
