@@ -47,7 +47,7 @@ export class UserUpdaterService extends BaseUserService {
     const existingUser = await this.findUserByEmail(email);
 
     if (existingUser && existingUser.id !== currentUserId) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException('Email já cadastrado anteriormente.');
     }
   }
 

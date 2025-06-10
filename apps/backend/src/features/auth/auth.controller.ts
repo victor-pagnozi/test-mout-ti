@@ -15,7 +15,7 @@ export class AuthController {
     type: SigninRequest,
   })
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'Usuário autenticado com sucesso',
   })
   @ApiResponse({

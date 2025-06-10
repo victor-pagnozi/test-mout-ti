@@ -14,9 +14,13 @@ export class SigninService {
   ) {}
 
   async signin(input: SigninRequest) {
-    const user = await this.userRepository.findOneByOrFail({
+    const user = await this.userRepository.findOneBy({
       email: input.email,
     });
+
+    if (!user) {
+      throw new UnauthorizedException('Usuário ou senha inválidos');
+    }
 
     const isPasswordValid = await this.hasherService.verify(
       user.password,

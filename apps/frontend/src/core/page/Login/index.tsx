@@ -1,8 +1,10 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { loginSchema, LoginSchemaType } from "./login.schema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
+import { useSignin } from "./hooks/useSignin";
 
 export const LoginPage = () => {
   const {
@@ -12,9 +14,12 @@ export const LoginPage = () => {
   } = useForm<LoginSchemaType>({
     resolver: yupResolver(loginSchema),
   });
+  const { mutate, isPending } = useSignin();
 
-  const submit = (data: LoginSchemaType) => {
-    console.log(data);
+  const submit = async (data: LoginSchemaType) => {
+    if (isPending) return;
+
+    mutate(data);
   };
 
   return (
@@ -69,14 +74,16 @@ export const LoginPage = () => {
       />
 
       <Box sx={{ display: "flex", gap: 4 }}>
-        <Button
-          variant="outlined"
-          sx={{
-            width: 140,
-          }}
-        >
-          CRIAR CONTA
-        </Button>
+        <Link href={"users/create"}>
+          <Button
+            variant="outlined"
+            sx={{
+              width: 140,
+            }}
+          >
+            CRIAR CONTA
+          </Button>
+        </Link>
         <Button
           variant="contained"
           type="submit"
@@ -84,7 +91,7 @@ export const LoginPage = () => {
             width: 140,
           }}
         >
-          ENTRAR
+          {isPending ? <CircularProgress color="inherit" /> : "ENTRAR"}
         </Button>
       </Box>
     </Box>

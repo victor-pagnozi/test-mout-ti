@@ -4,6 +4,7 @@ import { FormUserData } from "../../components/FormUser/formUser.schema";
 import apiInstance from "@/core/config/api";
 import { useRouter } from "next/navigation";
 import { emitToastEvent } from "@/core/common/functions/emitToastEvent";
+import { AxiosError } from "axios";
 
 export const useCreateClient = () => {
   const { push } = useRouter();
@@ -22,13 +23,11 @@ export const useCreateClient = () => {
 
       push("/users");
     },
-    onError: (error) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       emitToastEvent({
-        message: "Erro ao criar usuário.",
+        message: error.response?.data.message ?? "Erro ao criar usuário.",
         severity: "error",
       });
-
-      console.error("Error creating user:", error);
     },
   });
 

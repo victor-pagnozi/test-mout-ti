@@ -41,7 +41,7 @@ export class UserCreatorService extends BaseUserService {
   private async validateEmailUniqueness(email: string): Promise<void> {
     const existingUser = await this.findUserByEmail(email);
     if (existingUser) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException('Email já cadastrado anteriormente.');
     }
   }
 }

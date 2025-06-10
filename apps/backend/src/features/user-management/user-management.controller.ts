@@ -60,7 +60,7 @@ export class UserManagementController {
   })
   @ApiResponse({
     status: 409,
-    description: 'Email já existe',
+    description: 'Email já cadastrado anteriormente.',
   })
   async create(
     @Body() createUserRequest: CreateUserRequest,
